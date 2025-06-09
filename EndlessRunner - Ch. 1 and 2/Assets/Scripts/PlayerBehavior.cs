@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 
 /// <summary>
@@ -46,6 +47,36 @@ public class PlayerBehavior : MonoBehaviour
     /// </summary>
     private float currentScale = 1;
     private MobileJoystick joystick;
+    [Header("Object References")]
+    public TextMeshProUGUI scoreText;
+    private float score = 0;
+    public float Score
+    {
+        get
+        {
+            return score;
+        }
+        set
+        {
+            score = value;
+            /* Check if scoreText has been assigned */
+            if (scoreText == null)
+            {
+                Debug.LogError("Score Text is not set. Please go to the Inspector and assign it");
+                /* If not assigned, don't try to update it. */
+                return;
+            }
+            /* Update the text to display the whole number portion of the score */
+            int cleanScore = (int)score;
+            scoreText.text = cleanScore.ToString();
+
+            // finally, SAVE the highscore if its higher than we have saved
+            if (cleanScore > PlayerPrefs.GetInt("score"))
+            {
+                PlayerPrefs.SetInt("score", cleanScore);
+            }
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -53,6 +84,7 @@ public class PlayerBehavior : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         minSwipeDistancePixels = minSwipeDistance * Screen.dpi;
         joystick = GameObject.FindObjectOfType<MobileJoystick>();
+        Score = 0;
     }
     /// <summary>
     /// FixedUpdate is a prime place to put physics calculations happening over a period of time.
@@ -64,6 +96,7 @@ public class PlayerBehavior : MonoBehaviour
         {
             return;
         }
+        Score += Time.deltaTime;
         // Check if we're moving to the side
         var horizontalSpeed = Input.GetAxis("Horizontal") * dodgeSpeed;
         /* If the joystick is active and the player is moving the joystick, override the value */
@@ -289,4 +322,5 @@ public class PlayerBehavior : MonoBehaviour
             hit.transform.SendMessage("PlayerTouch", SendMessageOptions.DontRequireReceiver);
         }
     }
+    
 }

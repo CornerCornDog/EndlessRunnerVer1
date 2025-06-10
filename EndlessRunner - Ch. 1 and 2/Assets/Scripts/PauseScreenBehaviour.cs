@@ -26,7 +26,16 @@ public class PauseScreenBehaviour : MainMenuBehaviour
         paused = isPaused;
         /* If the game is paused, timeScale is 0, otherwise 1 */
         Time.timeScale = (paused) ? 0 : 1;
-        pauseMenu.SetActive(paused);
+        // No longer needed
+        //pauseMenu.SetActive(paused);
+        if (paused)
+        {
+            SlideMenuIn(pauseMenu);
+        }
+        else
+        {
+            SlideMenuOut(pauseMenu);
+        }
         onScreenControls.SetActive(!paused);
     }
     void Start()

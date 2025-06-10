@@ -380,6 +380,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highScoreText: {fileID: 1398097599}
+  controlPanel: {fileID: 1976611467}
+  buttonPanel: {fileID: 1784574324}
 --- !u!4 &514852631
 Transform:
   m_ObjectHideFlags: 0
